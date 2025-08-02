@@ -47,6 +47,11 @@ ENV/
 *.mp3
 download_log_*.log
 
+# temporary files
+/temp/
+test_audio.webm
+test_output/
+
 # IDE
 .vscode/
 .idea/

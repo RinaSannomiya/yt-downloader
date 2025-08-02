@@ -35,8 +35,29 @@ export default function Home() {
     Papa.parse(file, {
       header: true,
       complete: (results) => {
-        const data = results.data as VideoData[]
-        const validData = data.filter(row => row.url && row.title)
+        const rawData = results.data as any[]
+        
+        // CSVの形式を判定して変換
+        const validData = rawData.map(row => {
+          // 「曲名,URL」形式の場合
+          if (row['曲名'] && row['URL']) {
+            return {
+              url: row['URL'],
+              title: row['曲名'],
+              artist: ''
+            }
+          }
+          // 標準の「url,title,artist」形式の場合
+          else if (row.url && row.title) {
+            return {
+              url: row.url,
+              title: row.title,
+              artist: row.artist || ''
+            }
+          }
+          return null
+        }).filter(row => row !== null) as VideoData[]
+        
         setCsvData(validData)
         
         // ダウンロードステータスを初期化
