@@ -1,0 +1,14 @@
+# nixpacks設定ファイル
+# Node.jsとPythonの両方を使用
+
+[phases.setup]
+nixPkgs = ["nodejs-18_x", "python311", "ffmpeg"]
+
+[phases.install]
+cmds = [
+    "npm install",
+    "pip install -r python-scripts/requirements.txt"
+]
+
+[start]
+cmd = "npm run start"

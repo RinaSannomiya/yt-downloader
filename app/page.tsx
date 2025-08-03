@@ -15,6 +15,7 @@ interface DownloadStatus {
   title: string
   status: 'pending' | 'downloading' | 'completed' | 'error'
   downloadUrl?: string
+  sessionId?: string
   error?: string
 }
 
@@ -106,12 +107,14 @@ export default function Home() {
         }
         
         const data = await response.json()
+        console.log('API Response:', data)  // デバッグ用
         
         setDownloadStatuses(prev => prev.map((status, idx) => 
           idx === i ? { 
             ...status, 
             status: 'completed',
-            downloadUrl: data.downloadUrl 
+            downloadUrl: data.downloadUrl,
+            sessionId: data.sessionId  // セッションIDも保存
           } : status
         ))
         
@@ -135,9 +138,11 @@ export default function Home() {
 
   const downloadAll = () => {
     const completedDownloads = downloadStatuses.filter(s => s.status === 'completed' && s.downloadUrl)
+    console.log('Downloads to process:', completedDownloads)  // デバッグ用
     
     completedDownloads.forEach((download, index) => {
       setTimeout(() => {
+        console.log('Downloading:', download.downloadUrl)  // デバッグ用
         const a = document.createElement('a')
         a.href = download.downloadUrl!
         a.download = `${String(download.index).padStart(3, '0')}_${download.title}.mp3`
