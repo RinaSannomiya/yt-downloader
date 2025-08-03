@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.gitignore
+README.md
+.env
+.env.local
+temp
+test_audio.webm
+test_output
+*.log
+.DS_Store
